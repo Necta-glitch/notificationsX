@@ -1,17 +1,4 @@
-import sgMail from "@sendgrid/mail";
-import twilio from "twilio";
 import { supabase } from "./supabase";
-
-// Initialize SendGrid
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
-
-// Initialize Twilio
-const twilioClient =
-  process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
-    ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
-    : null;
 
 // Helper function to replace template variables
 export function replaceTemplateVariables(
@@ -25,7 +12,7 @@ export function replaceTemplateVariables(
   return result;
 }
 
-// Send email notification
+// Mock email notification for front-end only
 export async function sendEmail({
   to,
   subject,
@@ -39,22 +26,9 @@ export async function sendEmail({
   variables?: Record<string, string>;
   from?: string;
 }) {
-  if (!process.env.SENDGRID_API_KEY) {
-    throw new Error("SendGrid API key not configured");
-  }
-
   const content = replaceTemplateVariables(template, variables);
 
-  const msg = {
-    to,
-    from,
-    subject,
-    html: content,
-  };
-
   try {
-    const response = await sgMail.send(msg);
-
     // Log the notification in the database
     await supabase.from("notifications").insert({
       type: "email",
@@ -62,12 +36,12 @@ export async function sendEmail({
       subject,
       content,
       status: "sent",
-      metadata: { sendgrid_response: response[0] },
+      metadata: { frontend_only: true },
     });
 
-    return { success: true, response };
+    return { success: true };
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error logging email:", error);
 
     // Log the failed notification
     await supabase.from("notifications").insert({
@@ -76,37 +50,30 @@ export async function sendEmail({
       subject,
       content,
       status: "failed",
-      metadata: { error: JSON.stringify(error) },
+      metadata: { error: JSON.stringify(error), frontend_only: true },
     });
 
     return { success: false, error };
   }
 }
 
-// Send SMS notification
+// Mock SMS notification for front-end only
 export async function sendSMS({
   to,
   template,
   variables = {},
-  from = process.env.TWILIO_PHONE_NUMBER,
+  from = "12345678901",
 }: {
   to: string;
   template: string;
   variables?: Record<string, string>;
   from?: string;
 }) {
-  if (!twilioClient || !from) {
-    throw new Error("Twilio not properly configured");
-  }
-
   const content = replaceTemplateVariables(template, variables);
 
   try {
-    const message = await twilioClient.messages.create({
-      body: content,
-      from,
-      to,
-    });
+    // For demo purposes, create a mock message ID
+    const mockMessageId = `mock_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
 
     // Log the notification in the database
     await supabase.from("notifications").insert({
@@ -114,12 +81,12 @@ export async function sendSMS({
       recipient: to,
       content,
       status: "sent",
-      metadata: { twilio_sid: message.sid },
+      metadata: { mock_message_id: mockMessageId, frontend_only: true },
     });
 
-    return { success: true, message };
+    return { success: true, message: { id: mockMessageId } };
   } catch (error) {
-    console.error("Error sending SMS:", error);
+    console.error("Error logging SMS:", error);
 
     // Log the failed notification
     await supabase.from("notifications").insert({
@@ -127,7 +94,7 @@ export async function sendSMS({
       recipient: to,
       content,
       status: "failed",
-      metadata: { error: JSON.stringify(error) },
+      metadata: { error: JSON.stringify(error), frontend_only: true },
     });
 
     return { success: false, error };

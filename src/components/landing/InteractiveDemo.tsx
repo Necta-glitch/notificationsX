@@ -61,40 +61,40 @@ const InteractiveDemo = ({
   ];
 
   return (
-    <section className="w-full py-20 bg-slate-950 text-white">
+    <section className="w-full py-12 md:py-20 bg-slate-950 text-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">
             Create Powerful Notifications in Minutes
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
             Our intuitive editor makes it easy to craft personalized
             notifications that convert. Try it yourself!
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-start">
           {/* Editor Panel */}
           <Card className="bg-slate-900 border-slate-800 shadow-xl overflow-hidden">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Tabs
                 defaultValue={notificationType}
                 onValueChange={(value) =>
                   setNotificationType(value as "email" | "sms")
                 }
               >
-                <div className="flex justify-between items-center mb-6">
-                  <TabsList className="bg-slate-800">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-3">
+                  <TabsList className="bg-slate-800 w-full sm:w-auto">
                     <TabsTrigger
                       value="email"
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 flex-1 sm:flex-auto"
                     >
                       <Mail className="h-4 w-4" />
                       Email
                     </TabsTrigger>
                     <TabsTrigger
                       value="sms"
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 flex-1 sm:flex-auto"
                     >
                       <Smartphone className="h-4 w-4" />
                       SMS
@@ -205,7 +205,7 @@ const InteractiveDemo = ({
                       placeholder="Enter your message content"
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
-                      className="bg-slate-800 border-slate-700 text-slate-200 min-h-[150px]"
+                      className="bg-slate-800 border-slate-700 text-slate-200 min-h-[120px] sm:min-h-[150px]"
                     />
                     <div className="text-xs text-slate-500 mt-1">
                       Use {"{{"} name {"}}"} to personalize with recipient's
@@ -213,23 +213,23 @@ const InteractiveDemo = ({
                     </div>
                   </div>
 
-                  <div className="flex gap-3 mt-6">
+                  <div className="flex flex-wrap sm:flex-nowrap gap-2 sm:gap-3 mt-4 sm:mt-6">
                     <Button
                       onClick={handleAIEnhance}
-                      className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white"
+                      className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs sm:text-sm w-full sm:w-auto"
                     >
-                      <Wand2 className="h-4 w-4 mr-2" />
+                      <Wand2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       Enhance with AI
                     </Button>
                     <Button
                       variant="outline"
-                      className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                      className="border-slate-700 text-slate-300 hover:bg-slate-800 text-xs sm:text-sm w-full sm:w-auto"
                     >
-                      <Clock className="h-4 w-4 mr-2" />
+                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       Schedule
                     </Button>
-                    <Button className="ml-auto bg-indigo-600 hover:bg-indigo-700">
-                      <Send className="h-4 w-4 mr-2" />
+                    <Button className="ml-auto bg-indigo-600 hover:bg-indigo-700 text-xs sm:text-sm w-full sm:w-auto mt-2 sm:mt-0">
+                      <Send className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       Send Now
                     </Button>
                   </div>
@@ -246,7 +246,7 @@ const InteractiveDemo = ({
             <Card className="bg-slate-900 border-slate-800 shadow-xl overflow-hidden relative z-10">
               <CardContent className="p-0">
                 <div className="p-1 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <NotificationPreview
                     content={content}
                     subject={subject}
@@ -259,12 +259,12 @@ const InteractiveDemo = ({
             </Card>
 
             {useAI && (
-              <div className="mt-6 bg-slate-900 border border-indigo-500/30 rounded-lg p-4 relative overflow-hidden">
+              <div className="mt-4 sm:mt-6 bg-slate-900 border border-indigo-500/30 rounded-lg p-3 sm:p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="h-4 w-4 text-indigo-400" />
-                    <h4 className="text-sm font-medium text-indigo-400">
+                    <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-400" />
+                    <h4 className="text-xs sm:text-sm font-medium text-indigo-400">
                       AI Enhancement Applied
                     </h4>
                   </div>

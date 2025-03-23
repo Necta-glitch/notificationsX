@@ -5,7 +5,12 @@ const nextConfig = {
     domains: ["images.unsplash.com"],
   },
   env: {
-    PORT: process.env.PORT === "null" ? "3000" : process.env.PORT || "3000",
+    PORT:
+      process.env.PORT === "1000" ||
+      process.env.PORT === "null" ||
+      process.env.PORT === null
+        ? "3000"
+        : process.env.PORT || "3000",
   },
 };
 
